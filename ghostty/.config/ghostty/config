@@ -1,0 +1,10 @@
+keybind = clear
+
+font-family = Ubuntu Mono
+theme = Rose Pine
+background-opacity = 0.8
+maximize = true
+# set height/width as maximise not recognised
+window-height = 5000
+window-width = 5000
+gtk-titlebar-hide-when-maximized = true
