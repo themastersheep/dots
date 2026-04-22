@@ -1,8 +1,10 @@
 keybind = clear
 
-font-family = Ubuntu Mono
+font-family = Ioskeley Mono
+font-size = 9
 theme = Rose Pine
-background-opacity = 0.8
+background-opacity = 0.85
+
 maximize = true
 # set height/width as maximise not recognised
 window-height = 5000
