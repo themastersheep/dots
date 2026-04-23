@@ -278,4 +278,14 @@ later(function()
     keymap.map_multistep("i", "<C-j>", { "pmenu_next" })
     keymap.map_multistep("i", "<C-k>", { "pmenu_prev" })
     keymap.map_multistep("i", "<CR>", { "pmenu_accept" })
+    keymap.map_multistep("i", "<C-e>", {
+        {
+            condition = function() return vim.fn.pumvisible() == 0 end,
+            action = function()
+                require("mini.completion").complete_twostage()
+                return ""
+            end,
+        },
+    })
+
 end)
