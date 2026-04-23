@@ -80,9 +80,6 @@ au("LspAttach", {
 
         vim.bo[e.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
 
-        vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help,
-            { buffer = e.buf, desc = "Signature help" })
-
         local function format_with_imports()
             local clients = vim.lsp.get_clients({ bufnr = e.buf, method = "textDocument/codeAction" })
             for _, c in ipairs(clients) do
