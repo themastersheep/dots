@@ -165,46 +165,22 @@ later(function()
 end)
 
 -- ----------------------------------------------------------------------------
--- snipe.nvim — also backs the vim.ui.select trampoline in init.lua
--- ----------------------------------------------------------------------------
-
-later(function()
-    vim.pack.add({ "https://github.com/leath-dub/snipe.nvim" })
-    local snipe = require("snipe")
-    snipe.setup({
-        ui = {
-            position          = "cursor",
-            open_win_override = { border = "rounded" },
-            text_align        = "file-first",
-        },
-    })
-
-    snipe.ui_select_menu = require("snipe.menu"):new({ position = "center" })
-    snipe.ui_select_menu:add_new_buffer_callback(function(m)
-        vim.keymap.set("n", "<esc>", function() m:close() end, { nowait = true, buffer = m.buf })
-    end)
-
-    vim.keymap.set("n", "<leader>b", function() snipe.open_buffer_menu() end, { desc = "Snipe a buffer" })
-end)
-
--- ----------------------------------------------------------------------------
 -- namu.nvim
 -- ----------------------------------------------------------------------------
 
 later(function()
-    vim.pack.add({ "https://github.com/bassamsdata/namu.nvim" })
+    vim.pack.add({ { src = "https://github.com/themastersheep/namu.nvim", version = "jump" } })
+
     require("namu").setup({
         global = {
-            movement = {
+            movement          = {
                 next     = { "<c-j>", "<c-n>", "<DOWN>" },
                 previous = { "<c-k>", "<c-p>", "<UP>" },
             },
-            multiselect = { keymaps = { toggle = "<c-x>" } },
+            jump              = { enabled = true },
+            current_highlight = { enabled = true },
         },
-        namu_symbols = {
-            enable  = true,
-            options = { current_highlight = { enabled = true } },
-        },
+        ui_select = { enable = true },
     })
 
     vim.keymap.set("n", "<leader>ls", "<cmd>Namu symbols<cr>", { desc = "Namu symbols" })
@@ -212,4 +188,46 @@ later(function()
     vim.keymap.set("n", "<leader>ld", "<cmd>Namu diagnostics<cr>", { desc = "Namu diagnostics" })
     vim.keymap.set("n", "<leader>lD", "<cmd>Namu diagnostics workspace<cr>", { desc = "Namu workspace diagnostics" })
     vim.keymap.set("n", "<leader>lw", "<cmd>Namu watchtower<cr>", { desc = "Namu watchtower" })
+
+    vim.keymap.set("n", "<leader>b", function()
+        local bufs = vim.tbl_filter(
+            function(b) return b.loaded == 1 and b.name ~= "" end,
+            vim.fn.getbufinfo({ buflisted = 1 })
+        )
+        if #bufs == 0 then
+            vim.notify("No listed buffers", vim.log.levels.INFO)
+            return
+        end
+        vim.ui.select(bufs, {
+            prompt = "Buffers",
+            format_item = function(b) return vim.fn.fnamemodify(b.name, ":~:.") end,
+        }, function(choice)
+            if choice then vim.api.nvim_set_current_buf(choice.bufnr) end
+        end)
+    end, { desc = "Pick a buffer" })
+
+    -- ------------------------------------------------------------------------
+    -- z= — route built-in spell suggestions through vim.ui.select so jump-mode
+    -- labels give us one-key spelling corrections.
+    -- ------------------------------------------------------------------------
+
+    vim.keymap.set("n", "z=", function()
+        if not vim.wo.spell then
+            vim.notify("Spell checking is not enabled", vim.log.levels.WARN)
+            return
+        end
+        local word = vim.fn.expand("<cword>")
+        if word == "" then return end
+        local suggestions = vim.fn.spellsuggest(word, 10)
+        if #suggestions == 0 then
+            vim.notify("No suggestions for " .. word, vim.log.levels.INFO)
+            return
+        end
+        vim.ui.select(suggestions, { prompt = "Replace '" .. word .. "':" }, function(choice)
+            if choice then
+                vim.cmd("normal! ciw" .. choice)
+                vim.cmd("stopinsert")
+            end
+        end)
+    end, { desc = "Spell suggestions (vim.ui.select)" })
 end)
