@@ -1,11 +1,12 @@
+# fast-prompt: zero-fork prompt with git branch + worktree support
 _prompt_update() {
   local exit_code=$?
   local d=$PWD head root line
 
   if [[ $exit_code -eq 0 ]]; then
-    PROMPT_CHAR=$'\001\e[1;32m\002\U0000F1D0\001\e[0m\002 '
+    PROMPT_CHAR=$'\001\e[1;32m\002\U0000F1D0\001\e[0m\002'
   else
-    PROMPT_CHAR=$'\001\e[1;31m\002\U000F08D9\001\e[0m\002 '
+    PROMPT_CHAR=$'\001\e[1;31m\002\U000F08D9\001\e[0m\002'
   fi
 
   while [[ -n "$d" ]]; do
@@ -40,4 +41,4 @@ _prompt_update() {
 
 PROMPT_COMMAND="_prompt_update${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
 declare -a PROMPT_JOBS=([0]='' [1]=' ')
-PS1=$'\n\[\e[1;36m\]${PROMPT_DIR}\[\e[0m\]\[\e[35m\]${PROMPT_BRANCH}\[\e[0m\]\[\e[1;34m\]${PROMPT_JOBS[\j]- \uef0c \j}\[\e[0m\]\n${PROMPT_CHAR}'
+PS1=$'\n\[\e[36m\]${PROMPT_DIR}\[\e[0m\]\[\e[35m\]${PROMPT_BRANCH}\[\e[0m\]\[\e[1;34m\]${PROMPT_JOBS[\j]- \uef0c \j}\[\e[0m\]\n${PROMPT_CHAR} '
