@@ -158,20 +158,10 @@ later(function()
     vim.keymap.set("n", "<leader>gw", "<cmd>Git blame<cr>", { desc = "Git blame" })
 end)
 
--- ----------------------------------------------------------------------------
--- flash.nvim
--- ----------------------------------------------------------------------------
-
 later(function()
-    vim.pack.add({ "https://github.com/folke/flash.nvim" })
-    local flash = require("flash")
-    flash.setup({})
+    vim.pack.add({ "https://github.com/themastersheep/just-jump.nvim" })
 
-    vim.keymap.set({ "n", "x", "o" }, "<leader>J", function() flash.treesitter() end, { desc = "Flash Treesitter" })
-    vim.keymap.set("o", "r", function() flash.remote() end, { desc = "Remote Flash" })
-    vim.keymap.set({ "o", "x" }, "R", function() flash.treesitter_search() end, { desc = "Treesitter Search" })
-    vim.keymap.set("c", "<c-s>", function() flash.toggle() end, { desc = "Toggle Flash Search" })
-    vim.keymap.set({ "n", "x", "o" }, "<leader>j", function() flash.jump() end, { desc = "Flash" })
+    vim.keymap.set("n", "<leader>j", "<cmd>JustJump<cr>", { desc = "Jump, jump, jump around!" })
 end)
 
 -- ----------------------------------------------------------------------------
