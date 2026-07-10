@@ -159,26 +159,6 @@ later(function()
 end)
 
 -- ----------------------------------------------------------------------------
--- randomquote — splash screen. Must draw on the first frame to avoid an
--- empty-buffer flash; later() fires one tick after VimEnter and is too late.
--- ----------------------------------------------------------------------------
-
-vim.api.nvim_create_autocmd("VimEnter", {
-    once = true,
-    callback = function()
-        local ok, err = pcall(function()
-            vim.pack.add({ "https://github.com/kungfusheep/randomquote.nvim" })
-            require("randomquote").setup({ close_key = "q" })
-        end)
-        if not ok then
-            vim.schedule(function()
-                vim.notify("[randomquote] " .. tostring(err), vim.log.levels.ERROR)
-            end)
-        end
-    end,
-})
-
--- ----------------------------------------------------------------------------
 -- flash.nvim
 -- ----------------------------------------------------------------------------
 
