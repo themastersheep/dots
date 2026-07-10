@@ -116,7 +116,7 @@ later(function()
         },
     }
 
-    -- mini.pick.setup overrides vim.ui.select; restore the snipe trampoline
+    -- mini.pick.setup overrides vim.ui.select; capture and restore
     local ui_select_orig = vim.ui.select
     pick.setup(opts)
     vim.ui.select = ui_select_orig
