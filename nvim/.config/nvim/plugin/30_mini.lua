@@ -209,9 +209,6 @@ now_if_args(function()
             process_items  = process_items,
             snippet_insert = function(snippet) vim.snippet.expand(snippet) end,
         },
-        mappings = {
-            force_twostep = "<C-/>",
-        },
     })
 
     vim.lsp.config("*", { capabilities = completion.get_lsp_capabilities() })
@@ -267,5 +264,4 @@ later(function()
             end,
         },
     })
-
 end)
