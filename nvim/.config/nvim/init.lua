@@ -110,18 +110,6 @@ vim.g.loaded_tutor            = 1
 vim.g.loaded_2html_plugin     = 1
 
 -- ============================================================================
--- vim.ui.select trampoline (lazily delegate to snipe.nvim on first call)
--- snipe is added in plugin/40_plugins.lua via later(), so it is in rtp by the
--- time the user can trigger a ui.select.
--- ============================================================================
-
-vim.ui.select                 = function(...)
-    local snipe = require("snipe")
-    vim.ui.select = snipe.ui_select
-    return vim.ui.select(...)
-end
-
--- ============================================================================
 -- Diagnostic display (deferred when no file — saves require('vim.diagnostic'))
 -- ============================================================================
 
